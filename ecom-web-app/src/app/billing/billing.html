@@ -1,0 +1,76 @@
+<div class="billing-container">
+  <!-- Header Section -->
+  <div class="billing-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="icon">📋</span>
+        Billing Records
+      </h1>
+      <p class="page-subtitle">View and manage customer billing history</p>
+    </div>
+    <div class="billing-count" *ngIf="billing">
+      <span class="count-badge">{{billing._embedded.customers.length}}</span>
+      <span class="count-label">Total Bills</span>
+    </div>
+  </div>
+
+  <!-- Billing Timeline -->
+  <div class="billing-timeline" *ngIf="billing && billing._embedded.customers.length > 0">
+    <div class="timeline-item" *ngFor="let b of billing._embedded.customers">
+      <div class="timeline-marker"></div>
+
+      <div class="billing-card">
+        <div class="billing-card-header">
+          <div class="date-badge">
+            <span class="date-icon">📅</span>
+            <div class="date-content">
+              <span class="date-day">{{b.billingDate | date : 'dd'}}</span>
+              <span class="date-month">{{b.billingDate | date : 'MMM yyyy'}}</span>
+            </div>
+          </div>
+          <span class="bill-id">Bill #{{b.id}}</span>
+        </div>
+
+        <div class="billing-card-body">
+          <div class="billing-details">
+            <div class="detail-row">
+              <span class="detail-icon">👤</span>
+              <div class="detail-content">
+                <span class="detail-label">Customer ID</span>
+                <span class="detail-value">{{b.customerId}}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <span class="detail-icon">📅</span>
+              <div class="detail-content">
+                <span class="detail-label">Billing Date</span>
+                <span class="detail-value">{{b.billingDate | date : 'MMMM dd, yyyy'}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="billing-card-footer">
+          <button class="action-btn" (click)="getBillingDetail(b)">
+            <span class="btn-icon">🔍</span>
+            <span class="btn-text">View Details</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="billing && billing._embedded.customers.length === 0">
+    <div class="empty-icon">📭</div>
+    <h2>No Billing Records Found</h2>
+    <p>There are currently no billing records for this customer.</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="!billing">
+    <div class="loading-spinner"></div>
+    <p>Loading billing records...</p>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="billing-details-container" *ngIf="billingDetail">
+  <!-- Header Section -->
+  <div class="billing-details-header">
+    <h1 class="page-title">
+      <span class="icon">🧾</span>
+      Invoice Details
+    </h1>
+    <div class="invoice-badge">
+      <span class="badge-label">Invoice #</span>
+      <span class="badge-value">{{billingId}}</span>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="details-grid">
+    <!-- Customer Info Card -->
+    <div class="info-card">
+      <div class="card-header">
+        <span class="header-icon">👤</span>
+        <h2 class="card-title">Customer Information</h2>
+      </div>
+      <div class="card-body">
+        <div class="info-list">
+          <div class="info-item">
+            <span class="info-label">Billing ID</span>
+            <span class="info-value">{{billingDetail.id}}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Billing Date</span>
+            <span class="info-value">{{billingDetail.billingDate | date : 'MMMM dd, yyyy'}}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Customer ID</span>
+            <span class="info-value">{{billingDetail.customer.id}}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Customer Name</span>
+            <span class="info-value highlight">{{billingDetail.customer.name}}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Email Address</span>
+            <span class="info-value email">{{billingDetail.customer.email}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Items Card -->
+    <div class="products-card">
+      <div class="card-header">
+        <span class="header-icon">📦</span>
+        <h2 class="card-title">Order Items</h2>
+      </div>
+      <div class="card-body">
+        <div class="products-table-wrapper">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th class="text-right">Unit Price</th>
+                <th class="text-right">Quantity</th>
+                <th class="text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pi of billingDetail.productItems">
+                <td class="product-id">{{pi.product.id}}</td>
+                <td class="product-name">{{pi.product.name}}</td>
+                <td class="text-right">${{pi.product.unitPrice | number : '1.2-2'}}</td>
+                <td class="text-right">{{pi.product.quantity}}</td>
+                <td class="text-right amount">${{pi.amount | number : '1.2-2'}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="total-row">
+                <td colspan="4" class="total-label">Total Amount</td>
+                <td class="total-value">${{billingDetail.total | number : '1.2-2'}}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-state" *ngIf="!billingDetail">
+  <div class="loading-spinner"></div>
+  <p>Loading invoice details...</p>
+</div>

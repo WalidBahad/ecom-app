@@ -1,0 +1,62 @@
+<div class="customers-container">
+  <!-- Header Section -->
+  <div class="customers-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="icon">👥</span>
+        Customer Directory
+      </h1>
+      <p class="page-subtitle">Manage and view customer information</p>
+    </div>
+    <div class="customers-count" *ngIf="customers">
+      <span class="count-badge">{{customers._embedded.customers.length}}</span>
+      <span class="count-label">Total Customers</span>
+    </div>
+  </div>
+
+  <!-- Customers Grid -->
+  <div class="customers-grid" *ngIf="customers && customers._embedded.customers.length > 0">
+    <div class="customer-card" *ngFor="let c of customers._embedded.customers">
+      <div class="customer-card-header">
+        <div class="customer-avatar">
+          <span class="avatar-initials">{{c.name.substring(0, 2).toUpperCase()}}</span>
+        </div>
+        <span class="customer-id">ID: {{c.id}}</span>
+      </div>
+
+      <div class="customer-card-body">
+        <h3 class="customer-name">{{c.name}}</h3>
+
+        <div class="customer-details">
+          <div class="detail-item">
+            <span class="detail-icon">✉️</span>
+            <div class="detail-content">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">{{c.email}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="customer-card-footer">
+        <button class="action-btn" (click)="getBilling(c)">
+          <span class="btn-icon">📊</span>
+          <span class="btn-text">View Billings</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="customers && customers._embedded.customers.length === 0">
+    <div class="empty-icon">👤</div>
+    <h2>No Customers Found</h2>
+    <p>There are currently no customers in the system.</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="!customers">
+    <div class="loading-spinner"></div>
+    <p>Loading customers...</p>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="products-container">
+  <!-- Header Section -->
+  <div class="products-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="icon">🛍️</span>
+        Product Catalog
+      </h1>
+      <p class="page-subtitle">Browse our amazing product inventory</p>
+    </div>
+    <div class="products-count" *ngIf="products">
+      <span class="count-badge">{{products._embedded.products.length}}</span>
+      <span class="count-label">Products Available</span>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" *ngIf="products && products._embedded.products.length > 0">
+    <div class="product-card" *ngFor="let p of products._embedded.products">
+      <div class="product-card-header">
+        <div class="product-icon">📦</div>
+        <span class="product-id">ID: {{p.id.substring(0, 8)}}...</span>
+      </div>
+
+      <div class="product-card-body">
+        <h3 class="product-name">{{p.name}}</h3>
+
+        <div class="product-details">
+          <div class="detail-item">
+            <span class="detail-label">Price</span>
+            <span class="detail-value price">{{p.price | number:'1.2-2'}} MAD</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Stock</span>
+            <span class="detail-value stock" [class.low-stock]="p.quantity < 5">
+              {{p.quantity}} units
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card-footer">
+        <div class="stock-indicator" [class.available]="p.quantity > 5" [class.low]="p.quantity <= 5 && p.quantity > 0">
+          <span class="indicator-dot"></span>
+          <span class="indicator-text">{{p.quantity > 5 ? 'In Stock' : 'Low Stock'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="products && products._embedded.products.length === 0">
+    <div class="empty-icon">📭</div>
+    <h2>No Products Found</h2>
+    <p>There are currently no products available in the inventory.</p>
+  </div>
+
+  <!-- Loading State (optional - will show before products load) -->
+  <div class="loading-state" *ngIf="!products">
+    <div class="loading-spinner"></div>
+    <p>Loading products...</p>
+  </div>
+</div>
